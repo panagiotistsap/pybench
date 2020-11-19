@@ -19,8 +19,6 @@ class BenchGenerator:
             self.parent_func = None
             self.static_args = kwargs.pop('static_args', [])
             self.dynamic_args = kwargs.pop('dynamic_args', [])
-            print(self.name)
-            print(self.dynamic_args)
 
     def set_parents(self, parent_arg, parent_func):
         """This function will be called by the func that will use this generator"""

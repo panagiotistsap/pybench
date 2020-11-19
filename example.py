@@ -42,7 +42,7 @@ def produce_bin_centers(slices, beam_dt):
     min_beam_dt = min(beam_dt)
     max_beam_dt = max(beam_dt)
     bin_width = (max_beam_dt-min_beam_dt)//slices
-    bin_centers = np.linspace(min_beam_dt+bin_width//2, max_beam_dt-bin_width//2,slices)
+    bin_centers = np.linspace(min_beam_dt+bin_width//2, max_beam_dt-bin_width//2, slices)
     return bin_centers
 
 
