@@ -1,3 +1,5 @@
+from time import sleep
+
 from pybench import *
 import numpy as np
 
@@ -46,13 +48,14 @@ def produce_bin_centers(slices, beam_dt):
     return bin_centers
 
 
-def lickick(dt, bin_centers):
-    print(len(dt))
-    print(len(bin_centers))
+def li_kick(dt, bin_centers):
+    for i in range(1000):
+        de = dt*dt
+        db = bin_centers*bin_centers
 
 
-bench_likick = BenchFunction(
-    lickick,
+bf_li_kick = BenchFunction(
+    li_kick,
     BenchArrayArgument('dt', np.float64,
                        BenchGenerator('uniform',
                                       4, 4)),
@@ -63,4 +66,5 @@ bench_likick = BenchFunction(
                        index=1)
 )
 
-bench_likick.bench([[1000], [10]])
+bench_li_kick = PyBench(bf_li_kick, [[10000, 40000], [10, 6]], ['n_macro', 'slices'])
+bench_li_kick.bench(5, "yolo")

@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import numpy as np
 from bench_argument import BenchScalarArgument
 
@@ -11,7 +13,10 @@ class BenchGenerator:
         if name in ['uniform', 'normal']:
             self.arg_1 = args[0]
             self.arg_2 = args[1]
+        elif name == ['const']:
+            self.arg_1 = args[0]
         else:
+            # custom generator scenario
             if 'generator_function' not in kwargs.keys():
                 raise ValueError("You must provide generator_function when creating a custom generator")
             self.generator_func = kwargs['generator_function']
@@ -41,11 +46,11 @@ class BenchGenerator:
         if self.name == 'uniform':
             return np.random.uniform(self.arg_1, self.arg_2, self.parent_arg.size).astype(dtype)
         elif self.name == 'normal':
-            return np.normal(self.parent_arg.size, self.arg_1, self.arg_2).astype(dtype)
+            return np.random.normal(self.arg_1, self.arg_2, self.parent_arg.size,).astype(dtype)
+        elif self.name == 'const':
+            return deepcopy(self.arg_1)
         else:
             # arguments to be passed from the parent_func
             dynamic_args = self.produce_dynamic_args()
-            if self.parent_arg.__class__ == BenchScalarArgument:
-                return self.generator_func(*(self.static_args + dynamic_args), **kwargs)
-            else:
-                return self.generator_func(*(self.static_args + dynamic_args), **kwargs)
+            return self.generator_func(*(self.static_args + dynamic_args), **kwargs)
+

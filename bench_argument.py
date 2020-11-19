@@ -4,8 +4,8 @@ try:
         import pycuda.autoinit
     except:
         print("Pycuda is already initialized")
-except:
-    print("Cant use GPU")
+except ImportError:
+    print("Not using the GPU")
 
 
 class BenchScalarArgument:
@@ -17,7 +17,7 @@ class BenchScalarArgument:
         self.size = 1
 
     def generate(self):
-        return self.generator.generate()
+        return self.dtype(self.generator.generate())
 
     def set_size(self, input_size_list, turn):
         pass
@@ -34,9 +34,9 @@ class BenchArrayArgument:
 
     def generate(self):
         if self.gpu:
-            return gpuarray.to_gpu(self.generator.generate())
+            return gpuarray.to_gpu(self.generator.generate().astype(self.dtype))
         else:
-            return self.generator.generate()
+            return self.generator.generate().astype(self.dtype)
 
     def set_size(self, input_size_list, turn):
         if isinstance(input_size_list[0], list):

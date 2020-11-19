@@ -1,4 +1,4 @@
-from bench_argument import BenchScalarArgument
+import time
 
 
 class BenchFunction:
@@ -20,4 +20,6 @@ class BenchFunction:
             arg.set_size(input_sizes, turn)
             curr_arg = arg.generate()
             input_args.append(curr_arg)
+        start = time.time()
         self.func(*input_args)
+        return time.time() - start
