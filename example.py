@@ -1,6 +1,6 @@
 from time import sleep
 
-from pybench import *
+import pybench.main as pb
 import numpy as np
 
 

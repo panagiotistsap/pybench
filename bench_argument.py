@@ -1,22 +1,24 @@
 try:
     from pycuda import gpuarray
-    try:
-        import pycuda.autoinit
-    except:
-        print("Pycuda is already initialized")
 except ImportError:
     print("Not using the GPU")
 
 
 class BenchScalarArgument:
-    def __init__(self, name, dtype, generator):
+    def __init__(self, name, dtype, generator, key=False, enable=True):
         self.name = name
         self.dtype = dtype
         self.generator = generator
         self.parent = None
         self.size = 1
+        self.value = None
+        self.key = key
+        self.enable = enable
 
-    def generate(self):
+    def clear_value(self):
+        self.value = None
+
+    def generate(self, gpu=False):
         return self.dtype(self.generator.generate())
 
     def set_size(self, input_size_list, turn):
@@ -24,16 +26,17 @@ class BenchScalarArgument:
 
 
 class BenchArrayArgument:
-    def __init__(self, name, dtype, generator, index=0, gpu=False):
+    def __init__(self, name, dtype, generator, index=0, key=False, enable=True):
         self.name = name
         self.dtype = dtype
         self.index = index
         self.generator = generator
-        self.gpu = gpu
         self.size = None
+        self.key = key
+        self.enable = enable
 
-    def generate(self):
-        if self.gpu:
+    def generate(self, gpu=False):
+        if gpu:
             return gpuarray.to_gpu(self.generator.generate().astype(self.dtype))
         else:
             return self.generator.generate().astype(self.dtype)
