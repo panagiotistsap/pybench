@@ -29,9 +29,8 @@ class PyBench:
         for t in range(turns):
             for i in range(iterations):
                 self.bench_result[t][i] = self.function.bench(self.input_size_list, turn=t, gpu=gpu)
-
+        print(np.mean(self.bench_result, axis=1))
+        # print(np.std(self.bench_result, axis=1))
         if save:
-            print(np.mean(self.bench_result, axis=1))
-            print(np.std(self.bench_result, axis=1))
-            dump(np.mean(self.bench_result), "results/" + filename+"_mean.pkl")
-            dump(np.std(self.bench_result), "results/" + filename+"_std.pkl")
+            dump(np.mean(self.bench_result, axis=1), "results/" + filename+"_mean.pkl")
+            dump(np.std(self.bench_result, axis=1), "results/" + filename+"_std.pkl")
